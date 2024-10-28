@@ -19,19 +19,15 @@ class TripulacionRepositoryTest {
 
     @Test
     void testGuardarYEncontrarTripulacion() {
-        // Crear un miembro de tripulación
         Tripulacion tripulacion = new Tripulacion();
         tripulacion.setNombre("John Doe");
         tripulacion.setRol("Piloto");
 
-        // Guardar en la base de datos
         Tripulacion savedTripulacion = tripulacionRepository.save(tripulacion);
 
-        // Verificar que se guardó correctamente
         assertNotNull(savedTripulacion);
         assertEquals("John Doe", savedTripulacion.getNombre());
 
-        // Buscar la tripulación por su ID
         Optional<Tripulacion> foundTripulacion = tripulacionRepository.findById(savedTripulacion.getIdTripulante());
         assertTrue(foundTripulacion.isPresent());
         assertEquals("Piloto", foundTripulacion.get().getRol());
@@ -39,16 +35,13 @@ class TripulacionRepositoryTest {
 
     @Test
     void testEliminarTripulacion() {
-        // Crear una nueva tripulación
         Tripulacion tripulacion = new Tripulacion();
         tripulacion.setNombre("Jane Doe");
         tripulacion.setRol("Copiloto");
         Tripulacion savedTripulacion = tripulacionRepository.save(tripulacion);
 
-        // Eliminar la tripulación
         tripulacionRepository.deleteById(savedTripulacion.getIdTripulante());
 
-        // Verificar que ya no existe
         Optional<Tripulacion> deletedTripulacion = tripulacionRepository.findById(savedTripulacion.getIdTripulante());
         assertFalse(deletedTripulacion.isPresent());
     }

@@ -30,13 +30,11 @@ class TemporadaPrecioRepositoryTest {
 
     @Test
     void testGuardarYEncontrarTemporadaPrecio() {
-        // Crear una aeronave para asociarla con el vuelo
         Aeronave aeronave = new Aeronave("Boeing 737", 180, "3-3");
         Aeronave savedAeronave = aeronaveRepository.save(aeronave);
 
-        // Crear un vuelo y asignar valores válidos
         Vuelo vuelo = new Vuelo();
-        vuelo.setNumeroVuelo("V003");  // Asignar manualmente el ID
+        vuelo.setNumeroVuelo("V003");
         vuelo.setTipoVuelo("Comercial");
         vuelo.setCiudadOrigen("Lima");
         vuelo.setCiudadDestino("Cusco");
@@ -48,27 +46,22 @@ class TemporadaPrecioRepositoryTest {
         vuelo.setPrecio(BigDecimal.valueOf(200.00));
         vuelo.setPorcentajeImpuestos(BigDecimal.valueOf(10.00));
         vuelo.setSobretasa(BigDecimal.valueOf(5.00));
-        vuelo.setAeronave(savedAeronave);  // Asociar la aeronave
+        vuelo.setAeronave(savedAeronave);
         Vuelo savedVuelo = vueloRepository.save(vuelo);
 
-        // Crear una nueva temporada de precios asociada al vuelo
         TemporadaPrecio temporadaPrecio = new TemporadaPrecio();
         temporadaPrecio.setDescripcionTemporada("Temporada Alta");
-        temporadaPrecio.setPrecioTemporada(BigDecimal.valueOf(800.00));  // Utilizar BigDecimal
-        temporadaPrecio.setVuelo(savedVuelo);  // Asignar el vuelo a la temporada de precios
+        temporadaPrecio.setPrecioTemporada(BigDecimal.valueOf(800.00));
+        temporadaPrecio.setVuelo(savedVuelo);
 
-        // Guardar en la base de datos
         TemporadaPrecio savedTemporadaPrecio = temporadaPrecioRepository.save(temporadaPrecio);
 
-        // Verificar que se guardó correctamente
         assertNotNull(savedTemporadaPrecio);
         assertEquals("Temporada Alta", savedTemporadaPrecio.getDescripcionTemporada());
 
-        // Buscar la temporada por su ID
         Optional<TemporadaPrecio> foundTemporadaPrecio = temporadaPrecioRepository.findById(savedTemporadaPrecio.getIdTemporada());
         assertTrue(foundTemporadaPrecio.isPresent());
 
-        // Comparar BigDecimal usando compareTo() para evitar errores de precisión
         assertTrue(BigDecimal.valueOf(800.00).compareTo(foundTemporadaPrecio.get().getPrecioTemporada()) == 0);
     }
 }

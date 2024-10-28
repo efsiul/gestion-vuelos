@@ -17,15 +17,12 @@ class AeronaveRepositoryTest {
 
     @Test
     void testGuardarYEncontrarAeronave() {
-        // Crear una aeronave
         Aeronave aeronave = new Aeronave("Airbus A320", 180, "3-3");
         Aeronave savedAeronave = aeronaveRepository.save(aeronave);
 
-        // Verificar que se guardó correctamente
         assertNotNull(savedAeronave);
         assertEquals("Airbus A320", savedAeronave.getTipoAvion());
 
-        // Verificar que se puede encontrar por su ID
         Aeronave foundAeronave = aeronaveRepository.findById(savedAeronave.getIdAeronave()).orElse(null);
         assertNotNull(foundAeronave);
         assertEquals("Airbus A320", foundAeronave.getTipoAvion());

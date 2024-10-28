@@ -30,13 +30,11 @@ class EscalaRepositoryTest {
 
     @Test
     void testGuardarYEncontrarEscala() {
-        // Crear una aeronave para asociarla con el vuelo
         Aeronave aeronave = new Aeronave("Boeing 747", 300, "3-3");
         Aeronave savedAeronave = aeronaveRepository.save(aeronave);
 
-        // Crear un vuelo y asignar valores válidos
         Vuelo vuelo = new Vuelo();
-        vuelo.setNumeroVuelo("V001");  // Asignar manualmente el ID
+        vuelo.setNumeroVuelo("V001");
         vuelo.setTipoVuelo("Comercial");
         vuelo.setCiudadOrigen("Bogotá");
         vuelo.setCiudadDestino("Medellín");
@@ -46,25 +44,21 @@ class EscalaRepositoryTest {
         vuelo.setHoraSalida(LocalTime.of(10, 0));
         vuelo.setHoraLlegada(LocalTime.of(12, 0));
         vuelo.setPrecio(BigDecimal.valueOf(200.00));
-        vuelo.setPorcentajeImpuestos(BigDecimal.valueOf(10.00));  // Asignar porcentaje de impuestos
-        vuelo.setSobretasa(BigDecimal.valueOf(5.00));  // Asignar sobretasa
-        vuelo.setAeronave(savedAeronave);  // Asociar la aeronave
+        vuelo.setPorcentajeImpuestos(BigDecimal.valueOf(10.00));
+        vuelo.setSobretasa(BigDecimal.valueOf(5.00));
+        vuelo.setAeronave(savedAeronave);
         Vuelo savedVuelo = vueloRepository.save(vuelo);
 
-        // Crear una escala asociada al vuelo
         Escala escala = new Escala();
         escala.setAeropuertoEscala("Aeropuerto Internacional");
         escala.setDuracionEscala(120);
-        escala.setVuelo(savedVuelo);  // Asignar el vuelo a la escala
+        escala.setVuelo(savedVuelo);
 
-        // Guardar la escala en la base de datos
         Escala savedEscala = escalaRepository.save(escala);
 
-        // Verificar que se guardó correctamente
         assertNotNull(savedEscala);
         assertEquals("Aeropuerto Internacional", savedEscala.getAeropuertoEscala());
 
-        // Buscar la escala por su ID
         Optional<Escala> foundEscala = escalaRepository.findById(savedEscala.getIdEscala());
         assertTrue(foundEscala.isPresent());
         assertEquals(120, foundEscala.get().getDuracionEscala());
