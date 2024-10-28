@@ -1,0 +1,72 @@
+type Aeronave {
+    idAeronave: ID!
+    tipoAvion: String!
+    cantidadMaxAsientos: Int!
+    distribucionAsientos: String
+}
+
+type Vuelo {
+    numeroVuelo: ID!
+    tipoVuelo: String!
+    ciudadOrigen: String!
+    ciudadDestino: String!
+    idAeronave: Aeronave
+    fechaSalida: String!
+    fechaLlegada: String!
+    horaSalida: String!
+    horaLlegada: String!
+    precio: Float!
+    porcentajeImpuestos: Float
+    sobretasa: Float
+    estadoVuelo: String!
+}
+
+type Query {
+    obtenerAeronaves: [Aeronave]
+    obtenerVuelos: [Vuelo]
+}
+
+type Mutation {
+    crearAeronave(tipoAvion: String!, cantidadMaxAsientos: Int!, distribucionAsientos: String): Aeronave
+    crearVuelo(
+        numeroVuelo: String!,
+        tipoVuelo: String!,
+        ciudadOrigen: String!,
+        ciudadDestino: String!,
+        idAeronave: ID!,
+        fechaSalida: String!,
+        fechaLlegada: String!,
+        horaSalida: String!,
+        horaLlegada: String!,
+        precio: Float!,
+        porcentajeImpuestos: Float,
+        sobretasa: Float
+    ): Vuelo
+
+    actualizarAeronave(
+        idAeronave: ID!,
+        tipoAvion: String!,
+        cantidadMaxAsientos: Int!,
+        distribucionAsientos: String
+    ): Aeronave
+
+    eliminarAeronave(idAeronave: ID!): Boolean
+
+    actualizarVuelo(
+        numeroVuelo: ID!,
+        tipoVuelo: String!,
+        ciudadOrigen: String!,
+        ciudadDestino: String!,
+        idAeronave: ID!,
+        fechaSalida: String!,
+        fechaLlegada: String!,
+        horaSalida: String!,
+        horaLlegada: String!,
+        precio: Float!,
+        porcentajeImpuestos: Float,
+        sobretasa: Float
+    ): Vuelo
+
+    eliminarVuelo(numeroVuelo: ID!): Boolean
+
+}
