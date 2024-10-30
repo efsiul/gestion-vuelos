@@ -4,7 +4,7 @@ import com.sitas.gestionvuelos.entities.Aeronave;
 import com.sitas.gestionvuelos.entities.Vuelo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
@@ -14,7 +14,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
+@DataJpaTest
 @ActiveProfiles("test")
 class VueloRepositoryTest {
 
@@ -56,9 +56,11 @@ class VueloRepositoryTest {
 
     @Test
     void testEliminarVuelo() {
+        // Crear una aeronave para asociarla con el vuelo
         Aeronave aeronave = new Aeronave("Airbus A320", 180, "3-3");
         Aeronave savedAeronave = aeronaveRepository.save(aeronave);
 
+        // Crear un vuelo y asignar valores válidos, incluyendo "sobretasa"
         Vuelo vuelo = new Vuelo();
         vuelo.setNumeroVuelo("V124");
         vuelo.setTipoVuelo("Privado");
@@ -71,12 +73,18 @@ class VueloRepositoryTest {
         vuelo.setEstadoVuelo("Programado");
         vuelo.setPrecio(BigDecimal.valueOf(250.00));
         vuelo.setPorcentajeImpuestos(BigDecimal.valueOf(15.00));
-        vuelo.setAeronave(savedAeronave);
+        vuelo.setSobretasa(BigDecimal.valueOf(5.00));  // Asignar un valor para "sobretasa"
+        vuelo.setAeronave(savedAeronave);  // Asociar la aeronave
+
+        // Guardar el vuelo en la base de datos
         Vuelo savedVuelo = vueloRepository.save(vuelo);
 
+        // Eliminar el vuelo
         vueloRepository.deleteById(savedVuelo.getNumeroVuelo());
 
+        // Verificar que ya no existe
         Optional<Vuelo> deletedVuelo = vueloRepository.findById(savedVuelo.getNumeroVuelo());
         assertFalse(deletedVuelo.isPresent());
     }
+
 }
